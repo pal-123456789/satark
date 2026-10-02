@@ -1,0 +1,78 @@
+{
+  "version": "1.0",
+  "kind": "reference",
+  "disclaimer": "Known-legitimate domains are listed ONLY to detect impersonation and look-alike phishing. Listing is not an endorsement, recommendation, or ranking of any entity, and omission means nothing. Satark does not promote any broker, platform, or instrument. Sample scam domains are fictional and for testing only.",
+  "legitimate": {
+    "regulator_infra": [
+      "sebi.gov.in",
+      "scores.sebi.gov.in",
+      "investor.sebi.gov.in",
+      "nseindia.com",
+      "bseindia.com",
+      "nsdl.com",
+      "nsdl.co.in",
+      "cdslindia.com",
+      "rbi.org.in",
+      "npci.org.in"
+    ],
+    "govt_grievance": [
+      "cybercrime.gov.in",
+      "sachet.rbi.org.in"
+    ],
+    "registered_broker_sample": [
+      "zerodha.com",
+      "groww.in",
+      "upstox.com",
+      "angelone.in",
+      "icicidirect.com",
+      "hdfcsec.com",
+      "kotaksecurities.com",
+      "5paisa.com",
+      "motilaloswal.com",
+      "sbisecurities.in"
+    ]
+  },
+  "detection": {
+    "homoglyphs": { "0": "o", "1": "l", "3": "e", "4": "a", "5": "s", "7": "t", "$": "s", "@": "a", "vv": "w", "rn": "m" },
+    "multiPartSuffixes": ["gov.in", "co.in", "org.in", "net.in", "ac.in", "res.in", "co.uk", "com.au"],
+    "suspiciousTlds": [".xyz", ".top", ".online", ".club", ".site", ".win", ".bet", ".vip", ".icu", ".shop", ".live", ".cc", ".fit", ".rest"],
+    "phishyTokens": ["login", "signin", "verify", "verification", "secure", "security", "kyc", "update", "account", "wallet", "bonus", "offer", "gift", "claim", "refund", "prize", "reward", "support", "helpdesk", "official"],
+    "editDistanceThreshold": 1
+  },
+  "knownScamDomainsSample": [
+    "sebi-verify.xyz",
+    "nse-bonus.top",
+    "zerodha-kyc.online",
+    "groww-rewards.club"
+  ],
+  "messages": {
+    "lookalike": {
+      "label": { "en": "Look-alike of a known website" },
+      "reason": { "en": "This web address closely imitates a well-known regulator or broker domain (for example by swapping letters for numbers or changing the ending). Fraudsters clone trusted sites to steal logins and money." },
+      "action": { "en": "Do not log in or pay here. Type the official address yourself or use the app from the official store — never a link sent to you." },
+      "citation": { "label": "RBI / SEBI advisories on cloned and spoofed websites", "url": null }
+    },
+    "brand_in_untrusted": {
+      "label": { "en": "Trusted brand name on an untrusted address" },
+      "reason": { "en": "This link uses a well-known brand name inside an address that does not actually belong to that brand. This is a common phishing trick." },
+      "action": { "en": "Ignore the link. Reach the company only through its official website or app." },
+      "citation": { "label": "RBI / SEBI advisories on phishing links", "url": null }
+    },
+    "suspicious_unverified": {
+      "label": { "en": "Unverified link with risky signs" },
+      "reason": { "en": "This address is not a known official site and shows risky traits (an unusual ending plus words like 'verify', 'kyc', or 'bonus') often used in scams." },
+      "action": { "en": "Treat it as unsafe until you confirm it independently. Do not enter personal or banking details." },
+      "citation": { "label": "Cybercrime / RBI guidance on suspicious links", "url": null }
+    },
+    "known_scam": {
+      "label": { "en": "Known scam address (sample list)" },
+      "reason": { "en": "This address matches our reference list of known scam/phishing domains." },
+      "action": { "en": "Do not open it. Delete the message and warn whoever sent it." },
+      "citation": { "label": "Satark reference list of reported scam domains", "url": null }
+    },
+    "verified": {
+      "label": { "en": "Official / known-legitimate website" },
+      "detail": { "en": "This address matches a known regulator, exchange, depository, or registered intermediary domain. Still check the full address carefully for tiny spelling changes." }
+    }
+  }
+}

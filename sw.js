@@ -1,7 +1,7 @@
 // Satark service worker — offline-first app shell so the tool works on low /
 // no bandwidth. Pure static precache + cache-first; no tracking, no network
 // calls to third parties.
-const CACHE = 'satark-v2';
+const CACHE = 'satark-v3';
 const SHELL = [
   './',
   'index.html',
@@ -12,7 +12,11 @@ const SHELL = [
   'src/engine/parse.js',
   'src/engine/signals.js',
   'src/engine/scoring.js',
-  'src/data/knowledge-base.json'
+  'src/engine/registry.js',
+  'src/engine/domains.js',
+  'src/data/knowledge-base.json',
+  'src/data/sebi-registry.json',
+  'src/data/domains.json'
 ];
 
 self.addEventListener('install', (e) => {

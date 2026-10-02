@@ -1,0 +1,49 @@
+{
+  "version": "1.0",
+  "kind": "synthetic-sample",
+  "disclaimer": "Synthetic sample data for demonstration and offline testing only. This is NOT the real SEBI register and contains no real registration numbers or real entities. In production this bundled file is replaced by a live query to SEBI's official intermediary search.",
+  "feasibility": "SEBI publishes recognised/registered intermediaries. The engine looks up a registration number against this reference set; swapping the file for a live API/DB lookup needs no engine change.",
+  "prefixMeaning": {
+    "INA": "Investment Adviser",
+    "INH": "Research Analyst",
+    "INZ": "Stock Broker",
+    "INP": "Portfolio Manager",
+    "INB": "Stock Broker (legacy segment)",
+    "IND": "Other registered intermediary"
+  },
+  "messages": {
+    "not_found": {
+      "label": { "en": "SEBI registration could not be verified" },
+      "reason": { "en": "The registration number in this message was not found in our reference register of SEBI intermediaries. A genuine adviser, analyst, or broker can always be located on SEBI's official register." },
+      "action": { "en": "Verify the number yourself on SEBI's official intermediary search before trusting or paying anyone. If it does not exist there, treat the claim as fake." },
+      "citation": { "label": "SEBI — verify registered intermediaries (official intermediary search)", "url": null }
+    },
+    "flagged": {
+      "label": { "en": "Registration is suspended or cancelled" },
+      "reason": { "en": "This registration number matches an entry marked suspended or cancelled in our reference data. Dealing with an entity whose registration is not active carries no investor protection." },
+      "action": { "en": "Do not act on this. Confirm the current status on SEBI's official site, and report anyone who still claims to be active." },
+      "citation": { "label": "SEBI — registered intermediary status / debarred entities", "url": null }
+    },
+    "verified": {
+      "label": { "en": "Registration found in reference register" },
+      "detail": { "en": "A registration number here matched an active entry in our sample register. This is reassuring, but always re-check on SEBI's official site — never rely on a number quoted inside the message itself." }
+    }
+  },
+  "intermediaries": [
+    { "regNo": "INA000045210", "name": "Example Capital Advisers LLP", "type": "Investment Adviser", "status": "active", "validTill": "2027-03-31", "city": "Mumbai" },
+    { "regNo": "INA000045677", "name": "Sample Prudent Wealth Advisory", "type": "Investment Adviser", "status": "active", "validTill": "2028-06-30", "city": "Pune" },
+    { "regNo": "INA000046901", "name": "Demo Grihasti Financial Planners", "type": "Investment Adviser", "status": "active", "validTill": "2026-12-31", "city": "Ahmedabad" },
+    { "regNo": "INH000031204", "name": "Example Equity Research Co", "type": "Research Analyst", "status": "active", "validTill": "2027-09-30", "city": "Bengaluru" },
+    { "regNo": "INH000031880", "name": "Sample Market Insight Research", "type": "Research Analyst", "status": "active", "validTill": "2028-01-31", "city": "Hyderabad" },
+    { "regNo": "INH000032155", "name": "Demo Bharat Analytics", "type": "Research Analyst", "status": "active", "validTill": "2027-04-30", "city": "Indore" },
+    { "regNo": "INZ000212345", "name": "Example Securities Pvt Ltd", "type": "Stock Broker", "status": "active", "validTill": "2029-03-31", "city": "Mumbai" },
+    { "regNo": "INZ000213900", "name": "Sample Broking House Ltd", "type": "Stock Broker", "status": "active", "validTill": "2028-11-30", "city": "Delhi" },
+    { "regNo": "INP000006712", "name": "Example Portfolio Managers LLP", "type": "Portfolio Manager", "status": "active", "validTill": "2027-07-31", "city": "Chennai" },
+    { "regNo": "INP000007003", "name": "Demo Asset Stewardship PMS", "type": "Portfolio Manager", "status": "active", "validTill": "2028-02-28", "city": "Kolkata" }
+  ],
+  "flagged": [
+    { "regNo": "INA000099001", "name": "Sure Profit Advisory (sample)", "type": "Investment Adviser", "status": "suspended", "note": "Sample suspended entry for demo." },
+    { "regNo": "INH000099014", "name": "Guaranteed Tips Research (sample)", "type": "Research Analyst", "status": "cancelled", "note": "Sample cancelled entry for demo." },
+    { "regNo": "INZ000099220", "name": "Fast Gains Broking (sample)", "type": "Stock Broker", "status": "cancelled", "note": "Sample cancelled entry for demo." }
+  ]
+}
