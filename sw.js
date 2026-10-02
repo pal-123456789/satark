@@ -1,7 +1,7 @@
 // Satark service worker — offline-first app shell so the tool works on low /
 // no bandwidth. Pure static precache + cache-first; no tracking, no network
 // calls to third parties.
-const CACHE = 'satark-v1';
+const CACHE = 'satark-v2';
 const SHELL = [
   './',
   'index.html',

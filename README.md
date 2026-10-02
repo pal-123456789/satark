@@ -44,7 +44,7 @@ npm run serve     # serve the PWA at http://localhost:8080
 
 ## Status
 
-Day 1 — engine core + app shell live and tested (`node --test`: all green). Knowledge base, multilingual layer, voice, OCR, benchmark, and supporting surfaces in progress.
+Day 1 — engine core + app shell live and tested (`node --test`: **9/9 green**). The deterministic brain now ships **50 SEBI-grounded fraud signals** across fraud, impersonation, misinformation, technical, and behavioural categories, each with its own detectors, weight, plain-language reason, regulatory citation, and suggested action (regenerate with `python3 tools/build_kb.py`). Multilingual layer (hi/gu), voice, OCR, benchmark, and the supporting surfaces are in progress.
 
 ## Guardrails (hard constraints)
 

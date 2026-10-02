@@ -1,91 +1,1421 @@
 {
-  "version": "0.1-placeholder",
-  "note": "Seed knowledge base so the engine + tests are green from day one. Astra/Sol Prompt #1 replaces this with the full ~45-60 signal set; Prompt #3 adds hi/gu. Schema is frozen — do not change keys.",
+  "version": "1.0",
   "scoring": {
     "method": "noisy-or",
-    "buckets": { "safe": [0, 24], "caution": [25, 59], "high_risk": [60, 100] }
+    "buckets": {
+      "safe": [
+        0,
+        24
+      ],
+      "caution": [
+        25,
+        59
+      ],
+      "high_risk": [
+        60,
+        100
+      ]
+    }
   },
   "signals": [
     {
       "id": "guaranteed_returns",
       "category": "fraud",
       "severity": "critical",
-      "weight": 85,
-      "label": { "en": "Promises guaranteed or assured returns" },
-      "detect": {
-        "keywords": ["guaranteed", "guarantee", "assured return", "assured profit", "100% safe", "fixed profit", "no loss", "double your money", "risk free", "risk-free", "sure shot"],
-        "regex": ["\\b\\d{2,4}\\s?%\\s*(?:guaranteed|assured|sure|fixed|monthly|weekly|daily|return)"]
+      "weight": 90,
+      "label": {
+        "en": "Guaranteed returns"
       },
-      "reason": { "en": "No one can legally guarantee returns in the securities market. SEBI-registered advisers are expressly barred from promising assured profits, so a 'guaranteed return' pitch is one of the most reliable signs of a scam." },
-      "citation": { "label": "SEBI (Investment Advisers) Regulations, 2013 — advisers must not assure returns", "url": null },
-      "action": { "en": "Do not pay or share any details. A guaranteed-return claim is a red flag on its own." }
+      "detect": {
+        "keywords": [
+          "guaranteed returns",
+          "assured returns",
+          "assured return",
+          "guaranteed return",
+          "guaranteed profit",
+          "guaranteed income",
+          "fixed monthly profit",
+          "double your money",
+          "sure shot",
+          "sure-shot"
+        ],
+        "regex": [
+          "guaranteed\\s+\\d{1,4}\\s*%",
+          "\\d{1,4}\\s*%\\s*(?:guaranteed|assured|monthly|weekly|daily|returns?|profit)",
+          "guaranteed\\s+(?:returns?|profit|income|money)"
+        ]
+      },
+      "reason": {
+        "en": "No genuine market investment can promise returns without risk. Such promises are commonly used to make a person send money quickly."
+      },
+      "citation": {
+        "label": "SEBI investor warnings on guaranteed returns",
+        "url": null
+      },
+      "action": {
+        "en": "Do not send money; verify the person and service through the official SEBI website."
+      }
+    },
+    {
+      "id": "assured_profit_promise",
+      "category": "fraud",
+      "severity": "critical",
+      "weight": 88,
+      "label": {
+        "en": "Assured profit promise"
+      },
+      "detect": {
+        "keywords": [
+          "assured profit",
+          "profit is guaranteed",
+          "no loss strategy"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "A claim of profit with no chance of loss is not normal market language. It can hide a fraudulent scheme or an unregistered service."
+      },
+      "citation": {
+        "label": "SEBI (Prohibition of Fraudulent and Unfair Trade Practices) Regulations, 2003",
+        "url": null
+      },
+      "action": {
+        "en": "Treat the claim as unsafe and do not act until an independent official check is complete."
+      }
+    },
+    {
+      "id": "sebi_approved_claim",
+      "category": "impersonation",
+      "severity": "critical",
+      "weight": 86,
+      "label": {
+        "en": "Fake SEBI approval claim"
+      },
+      "detect": {
+        "keywords": [
+          "sebi approved scheme",
+          "approved by sebi",
+          "sebi guaranteed"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "SEBI registration does not mean that SEBI guarantees returns or approves a private profit promise. Fraudsters misuse SEBI's name to create trust."
+      },
+      "citation": {
+        "label": "SEBI investor guidance on registration and approval claims",
+        "url": null
+      },
+      "action": {
+        "en": "Check the exact entity name and registration details on SEBI's official intermediary search."
+      }
     },
     {
       "id": "claims_sebi_registration",
       "category": "impersonation",
       "severity": "medium",
-      "weight": 50,
-      "label": { "en": "Claims to be SEBI registered or approved" },
-      "detect": {
-        "keywords": ["sebi registered", "sebi approved", "sebi certified", "sebi regd", "sebi reg no", "registered with sebi", "sebi license"]
+      "weight": 48,
+      "label": {
+        "en": "Claims to be SEBI registered"
       },
-      "reason": { "en": "Scammers routinely claim SEBI registration or 'SEBI approval' to sound legitimate. SEBI never 'approves' schemes or guarantees anyone's performance. Any registration number must be verified against SEBI's own registry — the claim alone means nothing." },
-      "citation": { "label": "Verify intermediaries on SEBI's official registry", "url": null },
-      "action": { "en": "Verify the exact registration number and name in Satark's registry check before trusting the claim." }
+      "detect": {
+        "keywords": [
+          "sebi registered",
+          "sebi-registered",
+          "registered with sebi",
+          "sebi certified",
+          "sebi regd"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Anyone can type 'SEBI registered' in a message. The claim is not proof; scammers copy or invent registration details to look trustworthy. A real registration must be checked by exact name and number."
+      },
+      "citation": {
+        "label": "SEBI intermediary registration — verify on SEBI's official register",
+        "url": null
+      },
+      "action": {
+        "en": "Verify the exact name and registration number on SEBI's official website before trusting the claim."
+      }
     },
     {
-      "id": "upfront_fee_for_tips",
-      "category": "fraud",
-      "severity": "high",
-      "weight": 55,
-      "label": { "en": "Asks for an upfront fee to join or get 'VIP tips'" },
-      "detect": {
-        "keywords": ["vip", "joining fee", "membership fee", "activation fee", "registration fee", "upfront", "pay to join", "premium plan", "subscription for tips"],
-        "regex": ["\\bpay\\s*(?:₹|rs\\.?|inr)?\\s?\\d{3,}"]
+      "id": "fake_sebi_registration_number",
+      "category": "impersonation",
+      "severity": "critical",
+      "weight": 88,
+      "label": {
+        "en": "Suspicious SEBI number"
       },
-      "reason": { "en": "Legitimate investor protection is free. Demands for an upfront 'activation', 'VIP', or 'joining' fee before you can see results are a classic advance-fee trap." },
-      "citation": { "label": "Common advance-fee fraud pattern flagged in SEBI investor alerts", "url": null },
-      "action": { "en": "Never pay an upfront fee to a stranger promising profits." }
+      "detect": {
+        "keywords": [
+          "sebi registration no",
+          "sebi reg number",
+          "registration certificate attached"
+        ],
+        "regex": [
+          "\\bsebi\\s*(?:reg(?:istration)?|licen[cs]e)\\s*(?:no|number|id)?\\s*[:#-]?\\s*[a-z0-9/-]{5,}\\b"
+        ]
+      },
+      "reason": {
+        "en": "A number shown in a message may be copied, altered, or linked to another entity. A number alone does not prove that the sender is genuine."
+      },
+      "citation": {
+        "label": "SEBI intermediary registration and verification mechanism",
+        "url": null
+      },
+      "action": {
+        "en": "Search the number and legal name independently on the official SEBI website, without using the message link."
+      }
     },
     {
-      "id": "tip_group_channel",
-      "category": "fraud",
-      "severity": "high",
-      "weight": 60,
-      "label": { "en": "Pushes you into a Telegram / WhatsApp 'tip' group" },
-      "detect": {
-        "keywords": ["telegram", "whatsapp group", "tip group", "join our channel", "vip group", "pump", "join the group", "free tips group"],
-        "regex": ["\\b(?:t\\.me|chat\\.whatsapp\\.com)\\/"]
+      "id": "fake_exchange_registration",
+      "category": "impersonation",
+      "severity": "critical",
+      "weight": 84,
+      "label": {
+        "en": "Fake exchange registration"
       },
-      "reason": { "en": "Pump-and-dump rings herd investors into Telegram/WhatsApp groups, hype a stock they already hold, then sell into the crowd. The 'free group' is the bait." },
-      "citation": { "label": "SEBI has warned against unregistered 'tip' groups and pump-and-dump schemes", "url": null },
-      "action": { "en": "Treat stock calls from these groups as manipulation, not advice." }
+      "detect": {
+        "keywords": [
+          "nse approved account",
+          "bse registered agent",
+          "exchange certified trader"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Fraudsters may use exchange names or logos to appear legitimate. Exchange membership must be checked through the exchange's official directory."
+      },
+      "citation": {
+        "label": "NSE and BSE authorised member verification mechanisms",
+        "url": null
+      },
+      "action": {
+        "en": "Verify the member or intermediary directly on the official exchange website."
+      }
     },
     {
-      "id": "remote_access_app",
+      "id": "impersonated_registered_adviser",
+      "category": "impersonation",
+      "severity": "critical",
+      "weight": 86,
+      "label": {
+        "en": "Impersonated adviser"
+      },
+      "detect": {
+        "keywords": [
+          "official sebi advisor",
+          "speaking on behalf of your adviser",
+          "same name as registered adviser"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Scammers copy the name, logo, photographs, or registration details of a real adviser. The real firm may have no connection with the message."
+      },
+      "citation": {
+        "label": "SEBI (Investment Advisers) Regulations, 2013",
+        "url": null
+      },
+      "action": {
+        "en": "Call the adviser using contact details from its official website or SEBI record."
+      }
+    },
+    {
+      "id": "cloned_broker_app",
       "category": "technical",
       "severity": "critical",
-      "weight": 80,
-      "label": { "en": "Asks you to install a remote-access or unknown app" },
-      "detect": {
-        "keywords": ["anydesk", "teamviewer", "quicksupport", "screen share", "install this app", "download the apk", ".apk", "allow access to your screen", "rustdesk"]
+      "weight": 90,
+      "label": {
+        "en": "Cloned broker application"
       },
-      "reason": { "en": "Remote-access apps let a stranger see and control your phone, including your bank and Demat apps. No genuine official will ever ask you to install one." },
-      "citation": { "label": "RBI / SEBI / cyber-crime advisories on remote-access app fraud", "url": null },
-      "action": { "en": "Do not install it. If you already did, disconnect the internet and uninstall it now." }
+      "detect": {
+        "keywords": [
+          "new trading app download",
+          "exclusive broker app",
+          "copy trading application"
+        ],
+        "regex": [
+          "\\b(?:download|install)\\s+(?:our|the)\\s+(?:new|exclusive)\\s+(?:trading|broker|investment)\\s+app\\b"
+        ]
+      },
+      "reason": {
+        "en": "A fake application can show false balances and capture passwords or money. A familiar logo does not prove that the application is genuine."
+      },
+      "citation": {
+        "label": "SEBI investor alerts on fake trading applications",
+        "url": null
+      },
+      "action": {
+        "en": "Use only the application store link published on your broker's verified official website."
+      }
     },
     {
-      "id": "urgency_pressure",
+      "id": "cloned_broker_website",
+      "category": "technical",
+      "severity": "high",
+      "weight": 70,
+      "label": {
+        "en": "Lookalike broker website"
+      },
+      "detect": {
+        "keywords": [
+          "secure broker login link",
+          "new trading portal",
+          "official account activation website"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "A copied website may collect login details while looking like a real broker. Small changes in the domain name can be hard to notice on a phone."
+      },
+      "citation": {
+        "label": "SEBI and CERT-In phishing safety guidance",
+        "url": null
+      },
+      "action": {
+        "en": "Close the link and type the broker's known website address yourself."
+      }
+    },
+    {
+      "id": "sideloaded_apk_request",
+      "category": "technical",
+      "severity": "critical",
+      "weight": 88,
+      "label": {
+        "en": "Sideloaded APK request"
+      },
+      "detect": {
+        "keywords": [
+          "install apk",
+          "download apk file",
+          "allow unknown sources"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "An APK sent through chat can contain malware and may bypass store safety checks. It can steal banking details or control the phone."
+      },
+      "citation": {
+        "label": "RBI advisory on mobile and digital payment security",
+        "url": null
+      },
+      "action": {
+        "en": "Do not install the file; delete it and scan the phone with trusted security tools."
+      }
+    },
+    {
+      "id": "fake_ipo_allotment",
+      "category": "fraud",
+      "severity": "critical",
+      "weight": 86,
+      "label": {
+        "en": "Fake IPO allotment"
+      },
+      "detect": {
+        "keywords": [
+          "confirmed ipo allotment",
+          "ipo allotment fee",
+          "guaranteed ipo shares"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "IPO allotments follow formal application and registrar processes. A message demanding money for a guaranteed allotment is a strong fraud warning."
+      },
+      "citation": {
+        "label": "SEBI public issue and IPO application framework",
+        "url": null
+      },
+      "action": {
+        "en": "Check the application and allotment only through the recognised exchange, registrar, or bank channel."
+      }
+    },
+    {
+      "id": "fake_sme_allotment",
+      "category": "fraud",
+      "severity": "critical",
+      "weight": 84,
+      "label": {
+        "en": "Fake SME allotment"
+      },
+      "detect": {
+        "keywords": [
+          "sme ipo confirmed",
+          "pre allotment of sme shares",
+          "sme allotment payment"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "A private message cannot reserve or guarantee SME IPO shares. Fraudsters often use unfamiliar company names to demand advance payments."
+      },
+      "citation": {
+        "label": "SEBI public issue framework for SME platforms",
+        "url": null
+      },
+      "action": {
+        "en": "Verify the issue on the official exchange and never pay a personal account for allotment."
+      }
+    },
+    {
+      "id": "grey_market_pre_ipo_promise",
+      "category": "fraud",
+      "severity": "high",
+      "weight": 72,
+      "label": {
+        "en": "Guaranteed pre-IPO deal"
+      },
+      "detect": {
+        "keywords": [
+          "pre ipo guaranteed",
+          "grey market allotment",
+          "pre ipo fixed profit"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Grey-market dealings may lack normal investor protections and can involve false allotment claims. A guaranteed pre-IPO gain is especially unsafe."
+      },
+      "citation": {
+        "label": "SEBI investor cautions on unregulated securities offers",
+        "url": null
+      },
+      "action": {
+        "en": "Do not transfer money for an informal pre-IPO offer; use only regulated public issue channels."
+      }
+    },
+    {
+      "id": "pump_dump_small_cap_tip",
+      "category": "fraud",
+      "severity": "high",
+      "weight": 72,
+      "label": {
+        "en": "Small-cap pump signal"
+      },
+      "detect": {
+        "keywords": [
+          "small cap will explode",
+          "operator backed share",
+          "multibagger penny stock tip"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Promoters may spread excitement to push up a thinly traded share and then sell. A sudden tip about a little-known company needs strong caution."
+      },
+      "citation": {
+        "label": "SEBI (Prohibition of Fraudulent and Unfair Trade Practices) Regulations, 2003",
+        "url": null
+      },
+      "action": {
+        "en": "Do not trade from the message; save the evidence and verify the information from official disclosures."
+      }
+    },
+    {
+      "id": "telegram_vip_tips",
+      "category": "fraud",
+      "severity": "high",
+      "weight": 68,
+      "label": {
+        "en": "VIP tips channel"
+      },
+      "detect": {
+        "keywords": [
+          "telegram vip tips",
+          "whatsapp premium calls",
+          "exclusive intraday signals group",
+          "vip telegram",
+          "join our telegram",
+          "join telegram",
+          "telegram channel",
+          "tips group",
+          "signals group"
+        ],
+        "regex": [
+          "(?:t\\.me|telegram\\.me|chat\\.whatsapp\\.com)/[^\\s]+"
+        ]
+      },
+      "reason": {
+        "en": "Private tip groups can hide the identity and history of the person making the claims. Paid access does not prove registration or accuracy."
+      },
+      "citation": {
+        "label": "SEBI (Research Analysts) Regulations, 2014",
+        "url": null
+      },
+      "action": {
+        "en": "Do not pay for access until the provider's registration and identity are independently verified."
+      }
+    },
+    {
+      "id": "upfront_activation_fee",
+      "category": "fraud",
+      "severity": "high",
+      "weight": 70,
+      "label": {
+        "en": "Upfront activation fee"
+      },
+      "detect": {
+        "keywords": [
+          "pay activation fee",
+          "account opening charge now",
+          "release your profit fee",
+          "pay to activate",
+          "to activate your account",
+          "activation charge"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Fraudsters use small urgent fees to test whether a person will keep paying. More fees often follow after the first transfer."
+      },
+      "citation": {
+        "label": "RBI digital payment fraud awareness guidance",
+        "url": null
+      },
+      "action": {
+        "en": "Stop the payment and contact the bank through its official customer-care channel."
+      }
+    },
+    {
+      "id": "vip_membership_fee",
+      "category": "fraud",
+      "severity": "high",
+      "weight": 64,
+      "label": {
+        "en": "VIP membership fee"
+      },
+      "detect": {
+        "keywords": [
+          "vip investment membership",
+          "premium signal subscription payment",
+          "join elite profit group"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "A membership label can make a risky offer look exclusive and trustworthy. It does not establish that the provider is regulated."
+      },
+      "citation": {
+        "label": "SEBI investor education on unregistered investment advice",
+        "url": null
+      },
+      "action": {
+        "en": "Verify the provider's registration before sharing money or personal details."
+      }
+    },
+    {
+      "id": "fake_profit_screenshots",
+      "category": "misinformation",
+      "severity": "high",
+      "weight": 62,
+      "label": {
+        "en": "Fake profit screenshots"
+      },
+      "detect": {
+        "keywords": [
+          "profit screenshot proof",
+          "withdrawal screenshot",
+          "client earnings screenshot"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Screenshots can be edited or taken from another account. They do not prove that the platform is genuine or that money can be withdrawn."
+      },
+      "citation": {
+        "label": "SEBI investor caution on testimonials and performance claims",
+        "url": null
+      },
+      "action": {
+        "en": "Treat screenshots as unverified evidence and do not transfer money because of them."
+      }
+    },
+    {
+      "id": "fake_testimonials",
+      "category": "misinformation",
+      "severity": "medium",
+      "weight": 50,
+      "label": {
+        "en": "Unverified testimonials"
+      },
+      "detect": {
+        "keywords": [
+          "real client success story",
+          "ordinary people became rich",
+          "verified customer profit"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Testimonials may be paid, copied, or completely false. A story about someone else's result cannot establish safety."
+      },
+      "citation": {
+        "label": "SEBI advertising and investor-protection principles",
+        "url": null
+      },
+      "action": {
+        "en": "Ask for independently verifiable records instead of relying on testimonials."
+      }
+    },
+    {
+      "id": "personal_upi_payment",
+      "category": "fraud",
+      "severity": "critical",
+      "weight": 86,
+      "label": {
+        "en": "Personal UPI payment"
+      },
+      "detect": {
+        "keywords": [
+          "send to my upi",
+          "pay personal upi id",
+          "transfer to individual account",
+          "pay to my upi"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "A personal UPI ID may send money to an individual instead of a regulated business. Recovery can be difficult after the transfer."
+      },
+      "citation": {
+        "label": "RBI digital payment safety guidance",
+        "url": null
+      },
+      "action": {
+        "en": "Do not pay; verify the beneficiary name in the payment screen and use only official payment routes."
+      }
+    },
+    {
+      "id": "personal_bank_account_payment",
+      "category": "fraud",
+      "severity": "critical",
+      "weight": 86,
+      "label": {
+        "en": "Personal bank transfer"
+      },
+      "detect": {
+        "keywords": [
+          "transfer to my savings account",
+          "pay into personal bank account",
+          "beneficiary is an individual"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Investment money should not normally be sent to an unrelated person's savings account. This is a common way to move scam proceeds."
+      },
+      "citation": {
+        "label": "RBI customer-protection and digital payment fraud guidance",
+        "url": null
+      },
+      "action": {
+        "en": "Stop the transfer and confirm the beneficiary with the regulated institution using an official number."
+      }
+    },
+    {
+      "id": "fake_refund_request",
+      "category": "fraud",
+      "severity": "critical",
+      "weight": 88,
+      "label": {
+        "en": "Fake refund demand"
+      },
+      "detect": {
+        "keywords": [
+          "sebi refund processing fee",
+          "exchange refund tax",
+          "broker refund release charge"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "A person claiming to release a refund may demand another payment first. Official complaint or refund processes do not make an unknown caller trustworthy."
+      },
+      "citation": {
+        "label": "SCORES — SEBI complaint redress",
+        "url": null
+      },
+      "action": {
+        "en": "Do not pay the caller; contact the original institution through its official website."
+      }
+    },
+    {
+      "id": "recovery_scam",
+      "category": "fraud",
+      "severity": "critical",
+      "weight": 90,
+      "label": {
+        "en": "Recovery scam"
+      },
+      "detect": {
+        "keywords": [
+          "recover your lost investment",
+          "pay recovery charges",
+          "lawyer can recover funds"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "After a loss, scammers may promise recovery and request fees or account access. This can create a second loss."
+      },
+      "citation": {
+        "label": "National Cyber Crime helpline 1930 and cybercrime.gov.in",
+        "url": null
+      },
+      "action": {
+        "en": "Do not pay a recovery agent; report the original fraud promptly through 1930 or cybercrime.gov.in."
+      }
+    },
+    {
+      "id": "fake_customer_care",
+      "category": "impersonation",
+      "severity": "critical",
+      "weight": 84,
+      "label": {
+        "en": "Fake customer care"
+      },
+      "detect": {
+        "keywords": [
+          "customer care whatsapp number",
+          "official support number in message",
+          "call this refund helpline"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Search results and social messages can display fake support numbers. A caller may ask for OTPs, remote access, or a transfer."
+      },
+      "citation": {
+        "label": "RBI customer-care and digital payment safety guidance",
+        "url": null
+      },
+      "action": {
+        "en": "Find customer care only inside the official app, bank statement, or verified website."
+      }
+    },
+    {
+      "id": "digital_arrest_impersonation",
+      "category": "impersonation",
+      "severity": "critical",
+      "weight": 92,
+      "label": {
+        "en": "Digital arrest threat"
+      },
+      "detect": {
+        "keywords": [
+          "digital arrest",
+          "video call police verification",
+          "sebi cyber crime case"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Police, SEBI, or courts do not conduct a digital arrest through a threatening video call. Scammers use fear to force immediate payments."
+      },
+      "citation": {
+        "label": "Indian cybercrime advisories on digital arrest scams",
+        "url": null
+      },
+      "action": {
+        "en": "End the call, do not transfer money, and report the incident to 1930 or the nearest police station."
+      }
+    },
+    {
+      "id": "dabba_trading_offer",
+      "category": "fraud",
+      "severity": "critical",
+      "weight": 88,
+      "label": {
+        "en": "Dabba trading offer"
+      },
+      "detect": {
+        "keywords": [
+          "dabba trading",
+          "off market trading account",
+          "trade without demat"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Dabba trading records bets outside recognised exchanges and removes normal investor protections. The operator can refuse withdrawals or disappear."
+      },
+      "citation": {
+        "label": "SEBI warnings on illegal dabba trading",
+        "url": null
+      },
+      "action": {
+        "en": "Do not open the account; use only a verified broker connected to a recognised exchange."
+      }
+    },
+    {
+      "id": "unregistered_trading_platform",
+      "category": "fraud",
+      "severity": "critical",
+      "weight": 84,
+      "label": {
+        "en": "Unregistered trading platform"
+      },
+      "detect": {
+        "keywords": [
+          "private trading platform",
+          "unregistered broker app",
+          "trade directly with operator"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "A platform outside the regulated system may show invented prices or balances. It may provide no reliable complaint or recovery route."
+      },
+      "citation": {
+        "label": "SEBI intermediary registration framework",
+        "url": null
+      },
+      "action": {
+        "en": "Check the broker in the official exchange and SEBI directories before registering."
+      }
+    },
+    {
+      "id": "forex_money_doubling",
+      "category": "fraud",
+      "severity": "critical",
+      "weight": 86,
+      "label": {
+        "en": "Forex doubling scheme"
+      },
+      "detect": {
+        "keywords": [
+          "forex money doubling",
+          "double your currency",
+          "fixed forex income"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Money-doubling claims hide high risk and may involve unauthorised platforms or payment routes. A foreign-exchange label does not make a scheme legal."
+      },
+      "citation": {
+        "label": "RBI foreign exchange and unauthorised electronic trading platform advisories",
+        "url": null
+      },
+      "action": {
+        "en": "Do not deposit funds; check whether the entity is authorised by the relevant Indian regulator."
+      }
+    },
+    {
+      "id": "crypto_money_doubling",
+      "category": "fraud",
+      "severity": "high",
+      "weight": 78,
+      "label": {
+        "en": "Crypto doubling scheme"
+      },
+      "detect": {
+        "keywords": [
+          "crypto double deposit",
+          "send bitcoin get double",
+          "guaranteed crypto yield"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Doubling schemes commonly use fake wallets or social accounts and cannot guarantee repayment. Crypto transfers are often difficult to reverse."
+      },
+      "citation": {
+        "label": "Indian cybercrime advisories on cryptocurrency investment scams",
+        "url": null
+      },
+      "action": {
+        "en": "Do not send crypto or money; preserve the wallet address and report suspected fraud."
+      }
+    },
+    {
+      "id": "task_investment_job_scam",
+      "category": "fraud",
+      "severity": "high",
+      "weight": 78,
+      "label": {
+        "en": "Task investment job scam"
+      },
+      "detect": {
+        "keywords": [
+          "part time investment job",
+          "complete tasks to earn profit",
+          "recharge wallet for commission"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "A fake job may show small early rewards and then demand larger deposits to unlock tasks. Employment should not require investment payments."
+      },
+      "citation": {
+        "label": "National Cyber Crime advisories on task-based fraud",
+        "url": null
+      },
+      "action": {
+        "en": "Do not deposit money for a job; block the contact and report any payment fraud quickly."
+      }
+    },
+    {
+      "id": "deepfake_finfluencer",
+      "category": "impersonation",
+      "severity": "high",
+      "weight": 72,
+      "label": {
+        "en": "Impersonated finfluencer"
+      },
+      "detect": {
+        "keywords": [
+          "celebrity investment video",
+          "ai generated finance video",
+          "finfluencer recommends private link"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "A face or voice in a video can be copied or generated. Public figures may have no connection with the account or offer."
+      },
+      "citation": {
+        "label": "SEBI investor warnings on impersonation and social-media fraud",
+        "url": null
+      },
+      "action": {
+        "en": "Verify the post on the person's official verified account and do not use a private payment link."
+      }
+    },
+    {
+      "id": "loan_to_invest_pressure",
+      "category": "behavioral",
+      "severity": "high",
+      "weight": 66,
+      "label": {
+        "en": "Pressure to borrow"
+      },
+      "detect": {
+        "keywords": [
+          "take a loan to invest",
+          "borrow and multiply",
+          "use credit card for investment"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Borrowing increases pressure because the loan must be repaid even if the investment loses value. Fraudsters use this pressure to increase the amount sent."
+      },
+      "citation": {
+        "label": "SEBI investor education on risk and leverage",
+        "url": null
+      },
+      "action": {
+        "en": "Pause and do not borrow or pledge assets because of a message or caller."
+      }
+    },
+    {
+      "id": "remote_access_app_request",
+      "category": "technical",
+      "severity": "critical",
+      "weight": 90,
+      "label": {
+        "en": "Remote access request"
+      },
+      "detect": {
+        "keywords": [
+          "install anydesk",
+          "teamviewer support",
+          "give remote access",
+          "anydesk",
+          "teamviewer",
+          "quicksupport",
+          "rustdesk"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Remote-access tools can let another person see or control the phone. They may observe OTPs, banking screens, or payment authorisations."
+      },
+      "citation": {
+        "label": "RBI advisory on remote-access and screen-sharing applications",
+        "url": null
+      },
+      "action": {
+        "en": "Never install remote-access software for an unknown caller; uninstall it and contact your bank if it was used."
+      }
+    },
+    {
+      "id": "otp_pin_password_request",
+      "category": "technical",
+      "severity": "critical",
+      "weight": 92,
+      "label": {
+        "en": "Credential request"
+      },
+      "detect": {
+        "keywords": [
+          "share otp",
+          "share your otp",
+          "send otp",
+          "send your otp",
+          "tell me your otp",
+          "what is your otp",
+          "tell me your upi pin",
+          "send your trading password",
+          "share your password",
+          "share your cvv"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Banks, brokers, exchanges, and regulators do not need your OTP, PIN, password, or CVV to give support. Sharing them can allow unauthorised access."
+      },
+      "citation": {
+        "label": "RBI never-share OTP, PIN, password, and CVV guidance",
+        "url": null
+      },
+      "action": {
+        "en": "Do not share the credential; change it immediately if it was already disclosed."
+      }
+    },
+    {
+      "id": "screen_share_request",
+      "category": "technical",
+      "severity": "critical",
+      "weight": 84,
+      "label": {
+        "en": "Screen-sharing request"
+      },
+      "detect": {
+        "keywords": [
+          "share your screen",
+          "share screen",
+          "start screen recording",
+          "show banking screen on video"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "A shared screen can reveal account numbers, OTPs, PIN entry, or private messages. A support person does not need to watch your entire screen."
+      },
+      "citation": {
+        "label": "RBI digital banking safety guidance",
+        "url": null
+      },
+      "action": {
+        "en": "Refuse the request and close the call or chat."
+      }
+    },
+    {
+      "id": "link_shortener",
+      "category": "technical",
+      "severity": "high",
+      "weight": 60,
+      "label": {
+        "en": "Hidden destination link"
+      },
+      "detect": {
+        "keywords": [
+          "bit.ly investment link",
+          "tinyurl account verification",
+          "short link to trading app"
+        ],
+        "regex": [
+          "\\b(?:https?://)?(?:bit\\.ly|tinyurl\\.com|t\\.co|cutt\\.ly|rb\\.gy)/[a-z0-9-]+\\b"
+        ]
+      },
+      "reason": {
+        "en": "A shortened link hides the real website and can lead to phishing or malware. It is difficult to check the destination before opening it."
+      },
+      "citation": {
+        "label": "CERT-In phishing and malicious-link safety guidance",
+        "url": null
+      },
+      "action": {
+        "en": "Do not open the short link; find the organisation's website independently."
+      }
+    },
+    {
+      "id": "lookalike_punycode_domain",
+      "category": "technical",
+      "severity": "high",
+      "weight": 68,
+      "label": {
+        "en": "Lookalike domain"
+      },
+      "detect": {
+        "keywords": [
+          "xn--",
+          "sebi-support dot com",
+          "broker-login security"
+        ],
+        "regex": [
+          "https?://[^\\s]*xn--[^\\s]*"
+        ]
+      },
+      "reason": {
+        "en": "A lookalike or punycode domain can resemble a trusted name while being controlled by someone else. The spelling may be hard to notice on a small screen."
+      },
+      "citation": {
+        "label": "CERT-In domain and phishing safety guidance",
+        "url": null
+      },
+      "action": {
+        "en": "Do not log in; use a saved official bookmark or manually typed domain."
+      }
+    },
+    {
+      "id": "kyc_blocked_phishing",
+      "category": "technical",
+      "severity": "high",
+      "weight": 74,
+      "label": {
+        "en": "KYC blocking threat"
+      },
+      "detect": {
+        "keywords": [
+          "kyc expires today",
+          "account blocked unless kyc",
+          "pan verification urgent link"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Scammers create fear that an account will be blocked and then collect identity or banking details. Genuine KYC updates should use the institution's known channel."
+      },
+      "citation": {
+        "label": "RBI KYC fraud advisories and customer-protection guidance",
+        "url": null
+      },
+      "action": {
+        "en": "Ignore the message link and check KYC status inside the official bank or broker application."
+      }
+    },
+    {
+      "id": "affiliate_promotional_content",
+      "category": "misinformation",
+      "severity": "medium",
+      "weight": 42,
+      "label": {
+        "en": "Promotional content marker"
+      },
+      "detect": {
+        "keywords": [
+          "affiliate link",
+          "use my referral code",
+          "link in bio for account"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "The speaker may earn money when you click, join, or deposit. Promotional content is not independent investor education."
+      },
+      "citation": {
+        "label": "SEBI guidance on advertising and disclosure by investment-related persons",
+        "url": null
+      },
+      "action": {
+        "en": "Check whether the speaker clearly discloses the commercial relationship before taking any action."
+      }
+    },
+    {
+      "id": "dm_private_offer",
       "category": "behavioral",
       "severity": "medium",
-      "weight": 40,
-      "label": { "en": "Creates artificial urgency or pressure" },
-      "detect": {
-        "keywords": ["hurry", "last chance", "limited seats", "act now", "offer ends", "only today", "few spots left", "closing soon", "immediately", "don't miss"]
+      "weight": 48,
+      "label": {
+        "en": "Private offer invitation"
       },
-      "reason": { "en": "Urgency is engineered to stop you from thinking or verifying. A real investment decision never expires in minutes." },
-      "citation": { "label": "Behavioural manipulation tactic common to financial scams", "url": null },
-      "action": { "en": "Slow down. Pressure to act 'right now' is itself a warning sign." }
+      "detect": {
+        "keywords": [
+          "dm me for entry",
+          "message me privately",
+          "exclusive offer inbox"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Moving a financial offer to private chat reduces visibility and makes checking the claims harder. It can also enable pressure and repeated requests for money."
+      },
+      "citation": {
+        "label": "SEBI social-media investor-protection guidance",
+        "url": null
+      },
+      "action": {
+        "en": "Keep communication in a verifiable official channel and do not share personal documents in private chat."
+      }
+    },
+    {
+      "id": "absolute_success_claim",
+      "category": "misinformation",
+      "severity": "high",
+      "weight": 70,
+      "label": {
+        "en": "Absolute success claim"
+      },
+      "detect": {
+        "keywords": [
+          "will definitely rise",
+          "sure shot profit",
+          "guaranteed multibagger"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Absolute words hide uncertainty and can be used to sell a tip. Markets cannot be described honestly as certain."
+      },
+      "citation": {
+        "label": "SEBI (Research Analysts) Regulations, 2014",
+        "url": null
+      },
+      "action": {
+        "en": "Treat the claim as promotional and seek independently verified information."
+      }
+    },
+    {
+      "id": "no_risk_disclosure",
+      "category": "misinformation",
+      "severity": "medium",
+      "weight": 44,
+      "label": {
+        "en": "Missing risk disclosure"
+      },
+      "detect": {
+        "keywords": [
+          "profits only no risk",
+          "risk free opportunity",
+          "losses are impossible"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "A serious financial communication should explain that value can fall and losses are possible. Omitting risk can create a misleading impression."
+      },
+      "citation": {
+        "label": "SEBI advertising code and investor-risk disclosure principles",
+        "url": null
+      },
+      "action": {
+        "en": "Pause and look for clear risk information from an authorised source."
+      }
+    },
+    {
+      "id": "registration_used_as_sales_proof",
+      "category": "misinformation",
+      "severity": "high",
+      "weight": 62,
+      "label": {
+        "en": "Registration used to sell"
+      },
+      "detect": {
+        "keywords": [
+          "sebi registered so profit",
+          "registered means no loss",
+          "sebi number proves returns"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Registration identifies a regulated role; it does not guarantee performance or protect every transaction. Fraudsters use the word as a sales shortcut."
+      },
+      "citation": {
+        "label": "SEBI intermediary registration and investor-protection guidance",
+        "url": null
+      },
+      "action": {
+        "en": "Verify both the registration and the exact service being offered."
+      }
+    },
+    {
+      "id": "herd_fomo_framing",
+      "category": "behavioral",
+      "severity": "medium",
+      "weight": 46,
+      "label": {
+        "en": "Herd and FOMO pressure"
+      },
+      "detect": {
+        "keywords": [
+          "everyone is joining",
+          "all members are earning",
+          "do not miss this opportunity"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Popularity does not prove safety or legality. Fraudsters use group success stories to reduce careful checking."
+      },
+      "citation": {
+        "label": "SEBI investor education on behavioural risks",
+        "url": null
+      },
+      "action": {
+        "en": "Make no payment until you have checked the entity and offer independently."
+      }
+    },
+    {
+      "id": "artificial_urgency",
+      "category": "behavioral",
+      "severity": "high",
+      "weight": 64,
+      "label": {
+        "en": "Artificial urgency"
+      },
+      "detect": {
+        "keywords": [
+          "pay within one hour",
+          "offer expires tonight",
+          "last chance to join",
+          "act now",
+          "offer ends today"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Urgency prevents a person from checking registration, beneficiary details, and complaints. A genuine service should allow time for verification."
+      },
+      "citation": {
+        "label": "SEBI investor-protection guidance on pressure tactics",
+        "url": null
+      },
+      "action": {
+        "en": "Stop and wait; verify the offer through an independent official source."
+      }
+    },
+    {
+      "id": "artificial_scarcity",
+      "category": "behavioral",
+      "severity": "medium",
+      "weight": 44,
+      "label": {
+        "en": "Artificial scarcity"
+      },
+      "detect": {
+        "keywords": [
+          "only five slots left",
+          "limited investor seats",
+          "exclusive allotment closes now",
+          "few seats left",
+          "slots left"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Scarcity claims can make a person act before checking facts. They are especially suspicious when linked to a private payment."
+      },
+      "citation": {
+        "label": "SEBI investor education on misleading solicitations",
+        "url": null
+      },
+      "action": {
+        "en": "Ignore the deadline and verify whether the opportunity exists through official records."
+      }
+    },
+    {
+      "id": "secrecy_instruction",
+      "category": "behavioral",
+      "severity": "high",
+      "weight": 66,
+      "label": {
+        "en": "Secrecy instruction"
+      },
+      "detect": {
+        "keywords": [
+          "do not tell anyone",
+          "keep this confidential",
+          "hide this from your family"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "A demand for secrecy stops family members or bank staff from spotting warning signs. Trustworthy financial services do not need secret payments."
+      },
+      "citation": {
+        "label": "SEBI and cybercrime fraud-prevention guidance",
+        "url": null
+      },
+      "action": {
+        "en": "Discuss the message with a trusted person before taking any step."
+      }
+    },
+    {
+      "id": "fear_exploitation",
+      "category": "behavioral",
+      "severity": "high",
+      "weight": 62,
+      "label": {
+        "en": "Fear-based pressure"
+      },
+      "detect": {
+        "keywords": [
+          "your account will be seized",
+          "legal action if unpaid",
+          "police complaint against you"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Threats are used to make people act without checking who is calling. Regulators and banks have formal processes and do not demand secret transfers under threats."
+      },
+      "citation": {
+        "label": "Indian cybercrime advisories on impersonation and extortion",
+        "url": null
+      },
+      "action": {
+        "en": "End the conversation and contact the named organisation through its official channel."
+      }
+    },
+    {
+      "id": "greed_exploitation",
+      "category": "behavioral",
+      "severity": "high",
+      "weight": 60,
+      "label": {
+        "en": "Greed-based pressure"
+      },
+      "detect": {
+        "keywords": [
+          "become rich quickly",
+          "double money in days",
+          "retire early with this"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Fast-rich claims target hopes and hide the possibility of loss. They often lead to repeated deposits or referrals."
+      },
+      "citation": {
+        "label": "SEBI investor education on unrealistic return claims",
+        "url": null
+      },
+      "action": {
+        "en": "Do not send money based on a fast-wealth promise; verify the entity first."
+      }
+    },
+    {
+      "id": "pressure_before_verification",
+      "category": "behavioral",
+      "severity": "high",
+      "weight": 58,
+      "label": {
+        "en": "Pressure before checking"
+      },
+      "detect": {
+        "keywords": [
+          "act first verify later",
+          "no need to check registration",
+          "trust me and pay now"
+        ],
+        "regex": []
+      },
+      "reason": {
+        "en": "Refusing verification is a warning sign because legitimate providers can explain their identity and process. Pressure removes the user's chance to make a safe decision."
+      },
+      "citation": {
+        "label": "SEBI investor-protection and intermediary-verification guidance",
+        "url": null
+      },
+      "action": {
+        "en": "Pause the transaction until identity, registration, and beneficiary details are checked independently."
+      }
     }
   ]
 }
