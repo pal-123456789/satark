@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Satark shield">
+  <rect width="512" height="512" fill="#0b3d91"/>
+  <path d="M256 56l150 56v104c0 95-66 170-150 228-84-58-150-133-150-228V112l150-56z" fill="#1558d6"/>
+  <path d="M256 56l150 56v104c0 95-66 170-150 228V56z" fill="#2f6fe6"/>
+  <path d="M180 258l54 54 100-116" stroke="#fff" stroke-width="30" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

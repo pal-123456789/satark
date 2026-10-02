@@ -1,0 +1,91 @@
+{
+  "version": "0.1-placeholder",
+  "note": "Seed knowledge base so the engine + tests are green from day one. Astra/Sol Prompt #1 replaces this with the full ~45-60 signal set; Prompt #3 adds hi/gu. Schema is frozen — do not change keys.",
+  "scoring": {
+    "method": "noisy-or",
+    "buckets": { "safe": [0, 24], "caution": [25, 59], "high_risk": [60, 100] }
+  },
+  "signals": [
+    {
+      "id": "guaranteed_returns",
+      "category": "fraud",
+      "severity": "critical",
+      "weight": 85,
+      "label": { "en": "Promises guaranteed or assured returns" },
+      "detect": {
+        "keywords": ["guaranteed", "guarantee", "assured return", "assured profit", "100% safe", "fixed profit", "no loss", "double your money", "risk free", "risk-free", "sure shot"],
+        "regex": ["\\b\\d{2,4}\\s?%\\s*(?:guaranteed|assured|sure|fixed|monthly|weekly|daily|return)"]
+      },
+      "reason": { "en": "No one can legally guarantee returns in the securities market. SEBI-registered advisers are expressly barred from promising assured profits, so a 'guaranteed return' pitch is one of the most reliable signs of a scam." },
+      "citation": { "label": "SEBI (Investment Advisers) Regulations, 2013 — advisers must not assure returns", "url": null },
+      "action": { "en": "Do not pay or share any details. A guaranteed-return claim is a red flag on its own." }
+    },
+    {
+      "id": "claims_sebi_registration",
+      "category": "impersonation",
+      "severity": "medium",
+      "weight": 50,
+      "label": { "en": "Claims to be SEBI registered or approved" },
+      "detect": {
+        "keywords": ["sebi registered", "sebi approved", "sebi certified", "sebi regd", "sebi reg no", "registered with sebi", "sebi license"]
+      },
+      "reason": { "en": "Scammers routinely claim SEBI registration or 'SEBI approval' to sound legitimate. SEBI never 'approves' schemes or guarantees anyone's performance. Any registration number must be verified against SEBI's own registry — the claim alone means nothing." },
+      "citation": { "label": "Verify intermediaries on SEBI's official registry", "url": null },
+      "action": { "en": "Verify the exact registration number and name in Satark's registry check before trusting the claim." }
+    },
+    {
+      "id": "upfront_fee_for_tips",
+      "category": "fraud",
+      "severity": "high",
+      "weight": 55,
+      "label": { "en": "Asks for an upfront fee to join or get 'VIP tips'" },
+      "detect": {
+        "keywords": ["vip", "joining fee", "membership fee", "activation fee", "registration fee", "upfront", "pay to join", "premium plan", "subscription for tips"],
+        "regex": ["\\bpay\\s*(?:₹|rs\\.?|inr)?\\s?\\d{3,}"]
+      },
+      "reason": { "en": "Legitimate investor protection is free. Demands for an upfront 'activation', 'VIP', or 'joining' fee before you can see results are a classic advance-fee trap." },
+      "citation": { "label": "Common advance-fee fraud pattern flagged in SEBI investor alerts", "url": null },
+      "action": { "en": "Never pay an upfront fee to a stranger promising profits." }
+    },
+    {
+      "id": "tip_group_channel",
+      "category": "fraud",
+      "severity": "high",
+      "weight": 60,
+      "label": { "en": "Pushes you into a Telegram / WhatsApp 'tip' group" },
+      "detect": {
+        "keywords": ["telegram", "whatsapp group", "tip group", "join our channel", "vip group", "pump", "join the group", "free tips group"],
+        "regex": ["\\b(?:t\\.me|chat\\.whatsapp\\.com)\\/"]
+      },
+      "reason": { "en": "Pump-and-dump rings herd investors into Telegram/WhatsApp groups, hype a stock they already hold, then sell into the crowd. The 'free group' is the bait." },
+      "citation": { "label": "SEBI has warned against unregistered 'tip' groups and pump-and-dump schemes", "url": null },
+      "action": { "en": "Treat stock calls from these groups as manipulation, not advice." }
+    },
+    {
+      "id": "remote_access_app",
+      "category": "technical",
+      "severity": "critical",
+      "weight": 80,
+      "label": { "en": "Asks you to install a remote-access or unknown app" },
+      "detect": {
+        "keywords": ["anydesk", "teamviewer", "quicksupport", "screen share", "install this app", "download the apk", ".apk", "allow access to your screen", "rustdesk"]
+      },
+      "reason": { "en": "Remote-access apps let a stranger see and control your phone, including your bank and Demat apps. No genuine official will ever ask you to install one." },
+      "citation": { "label": "RBI / SEBI / cyber-crime advisories on remote-access app fraud", "url": null },
+      "action": { "en": "Do not install it. If you already did, disconnect the internet and uninstall it now." }
+    },
+    {
+      "id": "urgency_pressure",
+      "category": "behavioral",
+      "severity": "medium",
+      "weight": 40,
+      "label": { "en": "Creates artificial urgency or pressure" },
+      "detect": {
+        "keywords": ["hurry", "last chance", "limited seats", "act now", "offer ends", "only today", "few spots left", "closing soon", "immediately", "don't miss"]
+      },
+      "reason": { "en": "Urgency is engineered to stop you from thinking or verifying. A real investment decision never expires in minutes." },
+      "citation": { "label": "Behavioural manipulation tactic common to financial scams", "url": null },
+      "action": { "en": "Slow down. Pressure to act 'right now' is itself a warning sign." }
+    }
+  ]
+}

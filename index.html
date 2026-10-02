@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0b3d91" />
+  <title>Satark · Investor Fraud Shield</title>
+  <meta name="description" content="Satark — a Bharat-first, private, offline-capable investor-protection tool. Spot financial fraud, see through hype, and pause before you lose. Non-commercial. No stock tips." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <style>
+    :root{color-scheme:light;--bg:#f6f7fb;--card:#fff;--ink:#111827;--muted:#5b6472;--line:#e5e7eb;
+      --brand:#0b3d91;--brand2:#1558d6;--safe:#13794a;--safe-bg:#e8f6ee;--caution:#9a6700;--caution-bg:#fff6e0;
+      --risk:#b42318;--risk-bg:#fdeceb;--focus:#1558d6;--radius:16px}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,"Segoe UI",Roboto,"Noto Sans",Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+    .wrap{max-width:720px;margin:0 auto;padding:16px}
+    header.app{display:flex;align-items:center;gap:12px;padding:18px 4px 6px}
+    .mark{width:40px;height:40px;flex:0 0 auto}
+    .brand h1{font-size:1.5rem;margin:0;letter-spacing:.2px}
+    .brand p{margin:2px 0 0;color:var(--muted);font-size:.9rem}
+    .trust{display:flex;flex-wrap:wrap;gap:8px;margin:10px 2px 14px}
+    .trust span{font-size:.72rem;background:#eef2ff;color:var(--brand);border:1px solid #dbe3ff;border-radius:999px;padding:4px 10px;font-weight:600}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+    label.lead{display:block;font-weight:700;margin-bottom:8px}
+    .hint{color:var(--muted);font-size:.86rem;margin:-2px 0 10px}
+    textarea{width:100%;min-height:120px;font-size:1.05rem;padding:14px;border:1.5px solid var(--line);border-radius:12px;resize:vertical;font-family:inherit}
+    textarea:focus{outline:3px solid #c7d6ff;border-color:var(--focus)}
+    .row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+    button{font:inherit;font-weight:700;border:0;border-radius:12px;padding:14px 20px;cursor:pointer;min-height:52px}
+    .primary{background:var(--brand);color:#fff;flex:1;font-size:1.05rem}
+    .primary:hover{background:var(--brand2)}
+    .ghost{background:#eef2ff;color:var(--brand)}
+    #result{margin-top:16px;display:none}
+    .verdict{display:flex;align-items:center;gap:16px}
+    .gauge{width:92px;height:92px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;font-weight:800;font-size:1.5rem}
+    .vlabel{font-weight:800;font-size:1.25rem}
+    .vsub{color:var(--muted);font-size:.9rem}
+    .reasons{list-style:none;padding:0;margin:14px 0 0}
+    .reasons li{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+    .reasons .rl{font-weight:700;display:flex;align-items:center;gap:8px}
+    .dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto}
+    .reasons .why{color:#374151;font-size:.92rem;margin:6px 0}
+    .reasons .cite{color:var(--muted);font-size:.78rem}
+    .reasons .act{font-size:.9rem;font-weight:600;margin-top:6px}
+    .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+    .chips b{font-size:.72rem;background:#f1f5f9;border:1px solid var(--line);border-radius:8px;padding:3px 8px;font-weight:600;color:#334155}
+    .disclaimer{font-size:.8rem;color:var(--muted);margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+    footer{color:var(--muted);font-size:.8rem;text-align:center;padding:22px 10px 32px}
+    .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="app">
+      <svg class="mark" viewBox="0 0 48 48" aria-hidden="true"><path d="M24 3l16 6v11c0 10-7 18-16 24C15 38 8 30 8 20V9l16-6z" fill="#0b3d91"/><path d="M24 3l16 6v11c0 10-7 18-16 24V3z" fill="#1558d6"/><path d="M16 24l6 6 11-12" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div class="brand"><h1>Satark <span style="font-weight:500;color:var(--muted);font-size:1rem">सतर्क</span></h1>
+        <p>Spot the fraud. See through the hype. Pause before you lose.</p></div>
+    </header>
+
+    <div class="trust" role="list" aria-label="Our promises">
+      <span role="listitem">Non-commercial</span><span role="listitem">No stock tips</span>
+      <span role="listitem">Private by design</span><span role="listitem">Works offline</span>
+    </div>
+
+    <div class="card">
+      <label class="lead" for="artifact">Got a suspicious message, link or "SEBI number"? Paste it here.</label>
+      <p class="hint">A WhatsApp/Telegram forward, an "advisor" claim, a UPI id, or a link. Nothing you paste leaves your device.</p>
+      <textarea id="artifact" placeholder="e.g. SEBI registered advisor, guaranteed 300% returns, join our VIP Telegram, pay 5000 to activate…"></textarea>
+      <div class="row">
+        <button class="primary" id="check">Check it</button>
+        <button class="ghost" id="sample" type="button">Try an example</button>
+      </div>
+    </div>
+
+    <section id="result" class="card" aria-live="polite"></section>
+
+    <footer>
+      Satark is public-good investor-protection infrastructure — it never gives buy/sell advice or predictions.<br/>
+      Built for the <strong>SANGYAN</strong> Investor Resilience Hackathon · SEBI · NSDL · IIT (BHU) Varanasi.
+    </footer>
+  </div>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

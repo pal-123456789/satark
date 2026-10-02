@@ -1,0 +1,16 @@
+{
+  "name": "Satark — Investor Fraud Shield",
+  "short_name": "Satark",
+  "description": "Spot financial fraud, see through hype, and pause before you lose. Bharat-first, private, offline-capable investor protection.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f6f7fb",
+  "theme_color": "#0b3d91",
+  "lang": "en",
+  "categories": ["education", "finance", "utilities"],
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

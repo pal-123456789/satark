@@ -1,0 +1,14 @@
+{
+  "name": "satark",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Satark — a Bharat-first investor-protection PWA that helps users spot financial fraud, see through hype, pause before impulsive decisions, and recover safely. Built for the SANGYAN Investor Resilience Hackathon (SEBI / NSDL / IIT-BHU).",
+  "scripts": {
+    "test": "node --test",
+    "serve": "python3 -m http.server 8080",
+    "bench": "node test/benchmark.js"
+  },
+  "engines": { "node": ">=18" },
+  "license": "MIT"
+}
