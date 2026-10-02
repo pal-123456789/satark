@@ -44,7 +44,7 @@ npm run serve     # serve the PWA at http://localhost:8080
 
 ## Status
 
-Day 1 — engine core + app shell live and tested (`node --test`: **9/9 green**). The deterministic brain now ships **50 SEBI-grounded fraud signals** across fraud, impersonation, misinformation, technical, and behavioural categories, each with its own detectors, weight, plain-language reason, regulatory citation, and suggested action (regenerate with `python3 tools/build_kb.py`). Multilingual layer (hi/gu), voice, OCR, benchmark, and the supporting surfaces are in progress.
+Day 1–2 — engine core + app shell live and tested (`node --test`: **24/24 green**). The deterministic brain ships **50 SEBI-grounded fraud signals** across fraud, impersonation, misinformation, technical, and behavioural categories, each with its own detectors, weight, plain-language reason, regulatory citation, and suggested action (regenerate with `python3 tools/build_kb.py`). On top of the signal engine, two offline lookups add explainable pseudo-signals: a **SEBI-registration check** (is a quoted registration number actually in the register, or suspended/cancelled?) and a **domain look-alike check** (is this link a clone or typosquat of a regulator/broker site, or a known scam domain?) — with genuine, official matches surfaced as green reassurance notes. The multilingual layer (hi/gu), voice, OCR, benchmark, and the supporting surfaces are in progress.
 
 ## Guardrails (hard constraints)
 
